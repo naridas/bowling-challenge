@@ -7,8 +7,13 @@ describe('Frame', function() {
   var rollA;
 
   beforeEach(function() {
-    rollA = jasmine.createSpy('roll');
+    rollA = {
+      pins: function() {
+        return value;
+      }
+    };
     frame = new Frame(1, rollA, rollB);
+    spyOn(rollA,'pins').and.returnValue(10);
   });
 
   it('Frame number', function() {
@@ -23,8 +28,8 @@ describe('Frame', function() {
     expect(frame.rollB()).toEqual(new Roll(0, 0));
   });
 
-  it('Sum', function() {
-    expect(frame.rollB()).toEqual(new Roll(0, 0));
+  it('frame score', function() {
+    expect(frame.frameScore()).toEqual(10);
   });
 
 });

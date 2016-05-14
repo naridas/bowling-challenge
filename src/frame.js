@@ -19,5 +19,5 @@ Frame.prototype.rollB = function () {
 };
 
 Frame.prototype.frameScore = function () {
-  return this._rollA.pins + this._rollB.pins
+  return (this._rollA.pins() + this._rollB.pins())
 };
