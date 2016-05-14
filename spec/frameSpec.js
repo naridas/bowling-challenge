@@ -7,8 +7,8 @@ describe('Frame', function() {
   var rollA;
 
   beforeEach(function() {
-    frame = new Frame(1, rollA, rollB);
     rollA = jasmine.createSpy('roll');
+    frame = new Frame(1, rollA, rollB);
   });
 
   it('Frame number', function() {
@@ -20,6 +20,10 @@ describe('Frame', function() {
   });
 
   it('Roll B', function() {
+    expect(frame.rollB()).toEqual(new Roll(0, 0));
+  });
+
+  it('Sum', function() {
     expect(frame.rollB()).toEqual(new Roll(0, 0));
   });
 
