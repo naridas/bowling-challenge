@@ -1,72 +1,58 @@
-// 'use strict';
-//
-// function Thermostat(temp = 20){
-//
-//   this._temperature = +temp;
-//   this._min = 10;
-//   this.powerSaveMode = true;
-//   this.tempColor = "orange";
-//
-// }
-//
-// Thermostat.prototype.currentColor = function (){
-//   return this.tempColor;
-// }
-//
-// Thermostat.prototype.powerSaveOff = function (){
-//   this.powerSaveMode = false;
-// };
-//
-// Thermostat.prototype.resetTemp = function (){
-//   this._temperature = 20;
-//   this.changeTempColor();
-// };
-//
-// Thermostat.prototype.powerSaveOn = function (){
-//   this.powerSaveMode = true;
-// };
-//
-// Thermostat.prototype.isOnPowerSaveMode = function () {
-//   return this.powerSaveMode;
-// };
-//
-// Thermostat.prototype.currentTemperature = function () {
-//   return this._temperature;
-// };
-//
-// Thermostat.prototype.up = function (){
-//   if (this.atMax()){
-//     return;
-//   };
-//   this._temperature += 1;
-//   this.changeTempColor();
-// };
-//
-// Thermostat.prototype.down = function (){
-//   if (this.atMin()){
-//     return;
-//   };
-//   this._temperature -= 1;
-//   this.changeTempColor();
-// };
-//
-// Thermostat.prototype.atMin = function (){
-//   return this._temperature === this._min;
-// };
-//
-// Thermostat.prototype.atMax = function (){
-//   if (this.isOnPowerSaveMode()){
-//     return this._temperature === 25;
-//   };
-//   return this._temperature === 32;
-// };
-//
-// Thermostat.prototype.changeTempColor = function (){
-//   if (this._temperature < 18) {
-//     return  this.tempColor = "green";
-//   };
-//   if (this._temperature <= 25 && this._temperature >= 18) {
-//     return this.tempColor = "orange";
-//   };
-//   return this.tempColor = "red";
-// };
+'use strict';
+
+function Score(){
+  this._frames = []
+}
+
+Score.prototype.addFrame = function (frame) {
+  this._frames.push(frame);
+};
+
+Score.prototype.totalScore = function (frame) {
+  this.addFrame(frame);
+  this.calculateTotalScore();
+};
+
+Score.prototype.isStrike = function (frame) {
+  return frame._rollA.pins() === 10;
+};
+
+Score.prototype.isSpare = function (frame) {
+  return frame._rollA.pins() !== 10 && frame.frameScore() === 10;
+};
+
+Score.prototype.specificFrameScore = function (frame) {
+  return this._frames[this.indexFrame(frame)].frameScore();
+};
+
+Score.prototype.undefinedToZero = function (frameScore) {
+  return frameScore = frameScore || 0
+};
+
+Score.prototype.strikeCalculate = function (frameA) {
+  var frameB = this.indexFrame(frameA) + 1
+  var frameC = this.indexFrame(frameA) + 2
+  if (this.isStrike(frameA) && this.isStrike(frameB)){
+    return this.specificFrameScore(frameA) + this.undefinedToZero(this.specificFrameScore(frameB)) + this.undefinedToZero(this.specificFrameScore(frameC));
+  };
+  if (this.isStrike(frameA)){
+    return this.specificFrameScore(frameA) + this.undefinedToZero(this.specificFrameScore(frameB));
+  };
+  return;
+};
+
+Score.prototype.spareCalculate = function (frame) {
+  var frameB = this.indexFrame(frame) + 1
+  if (this.isSpare(frame)){
+    return this.specificFrameScore(frame) + this.undefinedToZero(this.specificFrameScore(frameB));
+  };
+  return;
+};
+
+Score.prototype.indexFrame = function (frame) {
+  return this._frames.indexOf(frame);
+};
+
+Score.prototype.calculateTotalScore = function () {
+  this._frames
+};

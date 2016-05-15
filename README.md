@@ -1,3 +1,113 @@
+first made roll spec
+```
+'use strict';
+
+describe('Roll', function() {
+
+  var roll;
+
+  beforeEach(function() {
+    roll = new Roll(1, 9);
+  });
+
+  it('Roll number', function() {
+    expect(roll.rollNumber()).toEqual(1);
+  });
+
+  it('Pins hit by the roll', function() {
+    expect(roll.pins()).toEqual(9);
+  });
+
+});
+
+```
+then made the roll class
+```
+'use strict';
+
+function Roll(rollNumber, pinNumber){
+
+  this._roll = rollNumber;
+  this._pins = pinNumber;
+}
+
+Roll.prototype.rollNumber = function () {
+  return this._roll
+};
+
+Roll.prototype.pins = function () {
+  return this._pins
+};
+
+```
+made fram spec
+```
+'use strict';
+
+describe('Frame', function() {
+
+  var frame;
+  var rollB;
+  var rollA;
+
+  beforeEach(function() {
+    rollA = {
+      pins: function() {
+        return value;
+      }
+    };
+    frame = new Frame(1, rollA, rollB);
+    spyOn(rollA,'pins').and.returnValue(10);
+  });
+
+  it('Frame number', function() {
+    expect(frame.frameNumber()).toEqual(1);
+  });
+
+  it('Roll A', function() {
+    expect(frame.rollA()).toEqual(rollA);
+  });
+
+  it('Roll B', function() {
+    expect(frame.rollB()).toEqual(new Roll(0, 0));
+  });
+
+  it('frame score', function() {
+    expect(frame.frameScore()).toEqual(10);
+  });
+
+});
+
+```
+made frame class
+```
+'use strict';
+
+function Frame(frameNumber, rollA, rollB){
+  this._frame = frameNumber;
+  this._rollA = rollA;
+  this._rollB = rollB !== undefined ? rollB : new Roll(0, 0);
+}
+
+Frame.prototype.frameNumber = function () {
+  return this._frame
+};
+
+Frame.prototype.rollA = function () {
+  return this._rollA
+};
+
+Frame.prototype.rollB = function () {
+  return this._rollB
+};
+
+Frame.prototype.frameScore = function () {
+  return (this._rollA.pins() + this._rollB.pins())
+};
+
+```
+
+
 
 Bowling Challenge
 =================
@@ -9,14 +119,14 @@ Bowling Challenge
 * If you have a partial solution, **still check in a partial solution**
 * You must submit a pull request to this repo with your code by 9am Monday week
 
-Task: 
+Task:
 -----
 
 Count and sum the scores of a bowling game for one player (in JavaScript).
 
 A bowling game consists of 10 frames in which the player tries to knock down the 10 pins. In every frame the player can roll one or two times. The actual number depends on strikes and spares. The score of a frame is the number of knocked down pins plus bonuses for strikes and spares. After every frame the 10 pins are reset.
 
-As usual please start by 
+As usual please start by
 
 * Forking this repo
 
@@ -62,7 +172,7 @@ Code Review
 In code review we'll be hoping to see:
 
 * All tests passing
-* The code is elegant: every class has a clear responsibility, methods are short etc. 
+* The code is elegant: every class has a clear responsibility, methods are short etc.
 
 Reviewers will potentially be using this [code review rubric](docs/review.md).  Note that referring to this rubric in advance may make the challenge somewhat easier.  You should be the judge of how much challenge you want.
 
