@@ -86,13 +86,23 @@ describe('Score', function () {
   // })
 
   it('Calculate total score for 5 normal', function () {
-    score.addFrame(1, frameNormal)
+    score.addFrame(1, frameStrike)
+    score.addFrame(2, frameNormal)
+    score.addFrame(3, frameNormal)
+    score.addFrame(4, frameNormal)
+    score.addFrame(5, frameNormal)
+    score.calculateTotalScore()
+    expect(score._score).toEqual(45)
+  })
+
+  it('Calculate total score for 5 normal and 1 strike', function () {
+    score.addFrame(1, frameStrike)
     score.addFrame(2, frameNormal)
     score.addFrame(3, frameNormal)
     score.addFrame(4, frameNormal)
     score.addFrame(5, frameNormal)
     score.addFrame(6, frameNormal)
     score.calculateTotalScore()
-    expect(score._score).toEqual(54)
+    expect(score._score).toEqual(64)
   })
 })

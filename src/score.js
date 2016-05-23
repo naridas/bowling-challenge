@@ -34,7 +34,6 @@ Score.prototype.strikeCalculate = function (frameNumber) {
   if (this.isStrike(frame)) {
     return frame.frameScore() + frameB.frameScore()
   }
-  return
 }
 
 Score.prototype.spareCalculate = function (frameNumber) {
@@ -43,7 +42,6 @@ Score.prototype.spareCalculate = function (frameNumber) {
   if (this.isSpare(frame)) {
     return frame.frameScore() + frameB._rollA.pins()
   }
-  return
 }
 
 Score.prototype.calculateTotalScore = function () {
@@ -52,10 +50,10 @@ Score.prototype.calculateTotalScore = function () {
     var frame = this._frames[frameNumber]
     if (this.isStrike(frame)) {
       this._score += this.strikeCalculate(frameNumber)
-    }
-    if (this.isSpare(frame)) {
+    } else if (this.isSpare(frame)) {
       this._score += this.spareCalculate(frameNumber)
+    } else {
+      this._score += frame.frameScore()
     }
-    this._score += frame.frameScore()
   }
 }
