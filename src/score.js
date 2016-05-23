@@ -9,7 +9,7 @@ Score.prototype.addFrame = function (n, frame) {
 
 Score.prototype.totalScore = function (n, frame) {
   this.addFrame(n, frame)
-  this.calculateTotalScore()
+  this.calculateTotalScore(this._frames)
 }
 
 Score.prototype.isStrike = function (frame) {
@@ -49,12 +49,13 @@ Score.prototype.spareCalculate = function (frameNumber) {
 Score.prototype.calculateTotalScore = function () {
   this._score = 0
   for (var frameNumber in this._frames) {
-    if (this.isStrike(this._frames[frameNumber])) {
+    var frame = this._frames[frameNumber]
+    if (this.isStrike(frame)) {
       this._score += this.strikeCalculate(frameNumber)
     }
-    if (this.isSpare(this._frames[frameNumber])) {
+    if (this.isSpare(frame)) {
       this._score += this.spareCalculate(frameNumber)
     }
-    return this._score += this._frames[frameNumber].frameScore()
+    this._score += frame.frameScore()
   }
 }

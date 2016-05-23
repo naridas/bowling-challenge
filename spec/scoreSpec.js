@@ -6,6 +6,9 @@ describe('Score', function () {
   var frameSpare
   var rollSpareA
   var rollSpareB
+  var frameNormal
+  var rollNormalA
+  var rollNormalB
 
   beforeEach(function () {
     score = new Score()
@@ -14,6 +17,9 @@ describe('Score', function () {
     frameSpare = new Frame(1, rollSpareA, rollSpareB)
     rollSpareA = new Roll(1, 4)
     rollSpareB = new Roll(1, 6)
+    frameNormal = new Frame(1, rollNormalA, rollNormalB)
+    rollNormalA = new Roll(1, 4)
+    rollNormalB = new Roll(1, 5)
   })
 
   it('adds a frame to frames', function () {
@@ -68,21 +74,24 @@ describe('Score', function () {
     expect(score.spareCalculate(1)).toEqual(14)
   })
 
-  it('Calculate total score for 1 strike', function () {
-    score.addFrame(1, frameStrike)
-    expect(score.calculateTotalScore()).toEqual(10)
-  })
+  // it('Calculate total score for 1 strike', function () {
+  //   score.addFrame(1, frameStrike)
+  //   expect(score.calculateTotalScore()).toEqual(10)
+  // })
 
-  it('Calculate total score for 2 strike', function () {
-    score.addFrame(1, frameStrike)
-    score.addFrame(1, frameStrike)
-    expect(score.calculateTotalScore()).toEqual(20)
-  })
+  // it('Calculate total score for 2 strike', function () {
+  //   score.addFrame(1, frameStrike)
+  //   score.addFrame(2, frameStrike)
+  //   expect(score.calculateTotalScore()).toEqual(20)
+  // })
 
-  it('Calculate total score for 3 strike', function () {
-    score.addFrame(1, frameStrike)
-    score.addFrame(1, frameStrike)
-    score.addFrame(1, frameStrike)
-    expect(score.calculateTotalScore()).toEqual(30)
+  it('Calculate total score for 5 normal', function () {
+    score.addFrame(1, frameNormal)
+    score.addFrame(2, frameNormal)
+    score.addFrame(3, frameNormal)
+    score.addFrame(4, frameNormal)
+    score.addFrame(5, frameNormal)
+    score.calculateTotalScore()
+    expect(score._score).toEqual(45)
   })
 })
