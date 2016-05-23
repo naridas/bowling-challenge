@@ -119,7 +119,7 @@ Score.prototype.addFrame = function (n, frame) {
 
 Score.prototype.totalScore = function (n, frame) {
   this.addFrame(n, frame)
-  this.calculateTotalScore()
+  this.calculateTotalScore(this._frames)
 }
 
 Score.prototype.isStrike = function (frame) {
@@ -130,42 +130,45 @@ Score.prototype.isSpare = function (frame) {
   return frame._rollA.pins() !== 10 && frame.frameScore() === 10
 }
 
-Score.prototype.undefinedToZero = function (frameScore) {
-  frameScore = frameScore || 0
+Score.prototype.undefinedToFrameZero = function (frame) {
+  return frame = frame || new Frame(1, new Roll(0, 0), new Roll(0, 0))
 }
 
 Score.prototype.strikeCalculate = function (frameNumber) {
-  var frameB = frameNumber + 1
-  var frameC = frameNumber + 2
-  if (this.isStrike(frameNumber) && this.isStrike(frameB)) {
-    return this._frames[frameNumber].frameScore() + this.undefinedToZero(this._frames[frameB].frameScore()) + this.undefinedToZero(this._frames[frameC].frameScore())
+  var frame = this._frames[frameNumber]
+  var frameB = this.undefinedToFrameZero(this._frames[frameNumber + 1])
+  var frameC = this.undefinedToFrameZero(this._frames[frameNumber + 2])
+  if (this.isStrike(frame) && this.isStrike(frameB)) {
+    return frame.frameScore() + frameB.frameScore() + frameC._rollA.pins()
   }
-  if (this.isStrike(frameNumber)) {
-    return this._frames[frameNumber].frameScore() + this.undefinedToZero(this._frames[frameB].frameScore())
+  if (this.isStrike(frame)) {
+    return frame.frameScore() + frameB.frameScore()
   }
   return
 }
 
 Score.prototype.spareCalculate = function (frameNumber) {
-  var frameB = frameNumber + 1
-  if (this.isSpare(frameNumber)) {
-    return this._frames[frameNumber].frameScore() + this.undefinedToZero(this._frames[frameB].frameScore())
+  var frame = this._frames[frameNumber]
+  var frameB = this.undefinedToFrameZero(this._frames[frameNumber + 1])
+  if (this.isSpare(frame)) {
+    return frame.frameScore() + frameB._rollA.pins()
   }
   return
 }
 
 Score.prototype.calculateTotalScore = function () {
+  this._score = 0
   for (var frameNumber in this._frames) {
-    if (this.isStrike(this._frames[frameNumber])) {
+    var frame = this._frames[frameNumber]
+    if (this.isStrike(frame)) {
       this._score += this.strikeCalculate(frameNumber)
     }
-    if (this.isSpare(this._frames[frameNumber])) {
+    if (this.isSpare(frame)) {
       this._score += this.spareCalculate(frameNumber)
     }
-    this._score += this._frames[frameNumber].frameScore()
+    this._score += frame.frameScore()
   }
 }
-
 ```
 Need to make some tests...
 ```
